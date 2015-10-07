@@ -50,6 +50,7 @@ module ActiveMerchant #:nodoc:
         :void => 'CCDELETE',
         :store => 'CCGETTOKEN',
         :update => 'CCUPDATETOKEN',
+        :retrieve => 'CCQUERYTOKEN'
       }
 
       # Initialize the Gateway
@@ -66,6 +67,14 @@ module ActiveMerchant #:nodoc:
       def initialize(options = {})
         requires!(options, :login, :password)
         super
+      end
+      
+      # Get credit card information 
+      def retrieve(token, options = {})
+        form = {}
+        form[:token] = token
+        add_test_mode(form, options)
+        commit(:retrieve, nil, form)
       end
 
       # Make a purchase
