@@ -50,7 +50,8 @@ module ActiveMerchant #:nodoc:
         :void => 'CCDELETE',
         :store => 'CCGETTOKEN',
         :update => 'CCUPDATETOKEN',
-        :retrieve => 'CCQUERYTOKEN'
+        :retrieve => 'CCQUERYTOKEN',
+        :complete => 'CCCOMPLETE'
       }
 
       # Initialize the Gateway
@@ -75,6 +76,14 @@ module ActiveMerchant #:nodoc:
         form[:token] = token
         add_test_mode(form, options)
         commit(:retrieve, nil, form)
+      end
+      
+      # Places an approved Auth Only transaction into the open batch for settlement.
+      def complete(txn_token, options = {})
+        form = {}
+        form[:txn_id] = txn_token
+        add_test_mode(form, options)
+        commit(:complete, nil, form)
       end
 
       # Make a purchase
