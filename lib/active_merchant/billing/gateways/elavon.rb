@@ -46,6 +46,7 @@ module ActiveMerchant #:nodoc:
         :credit => 'CCCREDIT',
         :refund => 'CCRETURN',
         :authorize => 'CCAUTHONLY',
+        :authorize_exis_crd => 'CCAUTHONLY',
         :capture => 'CCFORCE',
         :void => 'CCDELETE',
         :store => 'CCGETTOKEN',
@@ -118,6 +119,14 @@ module ActiveMerchant #:nodoc:
         add_customer_data(form, options)
         add_test_mode(form, options)
         commit(:authorize, money, form)
+      end
+
+      # Authorize a credit card for a given amount using existing card token 
+      def authorize_existing_card(money, token, options = {})
+        form = {}
+        form[:token] = token
+        add_test_mode(form, options)
+         commit(:authorize_exis_crd, money, form)
       end
 
       # Capture authorized funds from a credit card.
